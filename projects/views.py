@@ -1,28 +1,37 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from projects.forms import ProjectForm
 from projects.models import Project
 
 
-def projects(requests):
+def projects(request):
     projects = Project.objects.all()
     context = {
         'projects': projects
     }
-    return render(requests, "projects/projects.html", context)
+    return render(request, "projects/projects.html", context)
 
 
-def project(requests, pk):
+def project(request, pk):
     project_obj = Project.objects.get(id=pk)
+    tags = project_obj.tags.all()
     context = {
-        'project': project
+        'project': project_obj,
+        'tags': tags
     }
-    return render(requests, "projects/single_project.html", context)
+    return render(request, "projects/single_project.html", context)
 
 
-def create_project(requests):
+def create_project(request):
     form = ProjectForm()
+
+    if request.method == 'POST':
+        form =ProjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('projects')
+
     context = {
         'form': form
     }
-    return render(requests, "projects/project_form.html", context)
+    return render(request, "projects/project_form.html", context)
