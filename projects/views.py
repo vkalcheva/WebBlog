@@ -62,3 +62,5 @@ def delete_project(request, pk):
         'object': project
     }
     return render(request, "projects/delete_template.html", context)
+
+
