@@ -2,8 +2,11 @@ import uuid
 
 from django.db import models
 
+from users.models import Profile
+
 
 class Project(models.Model):
+    owner = models.ForeignKey(Profile,null=True, blank=True, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
     demo_link = models.CharField(max_length=2000, null=True, blank=True)
