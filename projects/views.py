@@ -3,12 +3,14 @@ from django.shortcuts import render, redirect
 
 from projects.forms import ProjectForm
 from projects.models import Project
+from projects.utils import search_projects
 
 
 def projects(request):
-    projects = Project.objects.all()
+    projects, search_query = search_projects(request)
     context = {
-        'projects': projects
+        'projects': projects,
+        'search_query': search_query
     }
     return render(request, "projects/projects.html", context)
 
@@ -49,7 +51,7 @@ def update_project(request, pk):
     form = ProjectForm(instance=project)
 
     if request.method == 'POST':
-        form =ProjectForm(request.POST, request.FILES, instance=project)
+        form = ProjectForm(request.POST, request.FILES, instance=project)
         if form.is_valid():
             form.save()
             return redirect('account')
@@ -71,5 +73,3 @@ def delete_project(request, pk):
         'object': project
     }
     return render(request, "delete_template.html", context)
-
-
