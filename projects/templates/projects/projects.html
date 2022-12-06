@@ -39,7 +39,8 @@
                                             {{ project.owner.name }}</a></p>
                                         <p class="project--rating">
                                             <span style="font-weight: bold;">{{ project.vote_ratio }}%</span> Positive
-                                            Feedback ({{ project.vote_total }}) Vote{{ project.vote_total|pluralize:"s" }}
+                                            Feedback ({{ project.vote_total }})
+                                            Vote{{ project.vote_total|pluralize:"s" }}
                                         </p>
                                         <div class="project__tags">
                                             {% for tag in project.tags.all %}
@@ -59,6 +60,7 @@
                 </div>
             </div>
         </section>
+        {% include 'pagination.html' with queryset=projects custom_range=custom_range %}
 
 
     </main>

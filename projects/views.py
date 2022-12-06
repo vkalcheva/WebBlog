@@ -3,14 +3,17 @@ from django.shortcuts import render, redirect
 
 from projects.forms import ProjectForm
 from projects.models import Project
-from projects.utils import search_projects
+from projects.utils import search_projects, paginate_projects
 
 
 def projects(request):
     projects, search_query = search_projects(request)
+    custom_range, projects = paginate_projects(request, projects, 6)
+
     context = {
         'projects': projects,
-        'search_query': search_query
+        'search_query': search_query,
+        'custom_range': custom_range
     }
     return render(request, "projects/projects.html", context)
 
